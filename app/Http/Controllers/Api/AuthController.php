@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -26,14 +27,21 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($request->only(['email', 'password']))) {
-            $token = Auth::user()->createToken('users')->accessToken;
+
+            $user = $request->user();
+            $tokenCreate = $user->createToken('Personal Access Token');
+            $tokenCreate->token->expires_at = $request->remember_me ? Carbon::now()->addDays(30) : Carbon::now()->addHours(12);
+            $tokenCreate->token->save();
+
             return response()->json([
-                'access_token' => $token,
+                'access_token' => $tokenCreate->accessToken,
                 'token_type' => 'Bearer',
+                'expires_at' => Carbon::parse($tokenCreate->token->expires_at)->toDateTimeString(),
                 'refresh_token' => null,
                 'user' => Auth::user(),
             ], 200);
         }
+
         return response()->json([
             'status' => 401,
             'errors' => 'Usuario e/ou senha invalidos'
