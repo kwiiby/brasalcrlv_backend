@@ -10,4 +10,18 @@ class Company extends Model
     use HasFactory;
 
     protected $table = 'companies';
+
+    protected $fillable = [
+        'name',
+        'cnpj',
+        'certificate',
+        'certificate_password',
+        'certificate_expire',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

@@ -25,5 +25,6 @@ class UserSeeder extends Seeder
         $u->password = Hash::make('password');
         $u->remember_token = Str::random(10);
         $u->save();
+        $u->companies()->sync([1,2]);
     }
 }

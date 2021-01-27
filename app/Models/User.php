@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -37,4 +38,16 @@ class User extends Authenticatable
     ];
 
     protected $casts = [];
+
+    protected $appends = [
+      'companies-list',
+    ];
+
+    public function getCompaniesListAttribute() {
+        return DB::table('users_companies')->where('user_id', $this->attributes['id'])->get('company_id')->keys();
+    }
+
+    public function companies() {
+        return $this->belongsToMany(Company::class, 'users_companies', 'user_id', 'company_id', 'id');
+    }
 }

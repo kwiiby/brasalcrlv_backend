@@ -20,6 +20,7 @@ class CreateCompaniesTable extends Migration
             $table->string('cnpj', 16)->nullable();
             $table->string('certificate')->nullable(false);
             $table->string('certificate_password')->nullable(false);
+            $table->date('certificate_expire')->nullable(false);
 
             $table->timestamps();
             $table->softDeletes();
