@@ -15,6 +15,7 @@ use PhpParser\Node\Expr\Array_;
  * @property mixed email
  * @property mixed password
  * @property mixed remember_token
+ * @property mixed|string type
  */
 class User extends Authenticatable
 {
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'cpf',
         'email',
         'password',
+        'type',
     ];
 
     protected $hidden = [
@@ -44,7 +46,7 @@ class User extends Authenticatable
       'companies-list',
     ];
 
-    public function getCompaniesListAttribute(): Array
+    public function getCompaniesListAttribute()
     {
         return DB::table('users_companies')->where('user_id', $this->attributes['id'])->get('company_id')->pluck('company_id');
     }
