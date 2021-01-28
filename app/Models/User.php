@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use PhpParser\Node\Expr\Array_;
 
 /**
  * @property mixed name
@@ -43,8 +44,9 @@ class User extends Authenticatable
       'companies-list',
     ];
 
-    public function getCompaniesListAttribute() {
-        return DB::table('users_companies')->where('user_id', $this->attributes['id'])->get('company_id')->keys();
+    public function getCompaniesListAttribute(): Array
+    {
+        return DB::table('users_companies')->where('user_id', $this->attributes['id'])->get('company_id')->pluck('company_id');
     }
 
     public function companies() {

@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
@@ -19,14 +17,21 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
-            'lastname' => 'required|max:255',
-            'cpf' => 'required|max:11',
-            'email' => 'required|unique:users,email|max:160'
+            'name' => 'required|max:200',
+            'lastname' => 'required|max:200',
+            'cpf' => 'required|min:11|max:11',
+            'email' => 'required|unique:users,email|max:160|regex:/^[A-Za-z0-9\.]*@(brasal)[.](com)[.](br)$/',
+            'password' => 'min:4|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'min:4',
+            'companies-list' => 'array',
+            'companies-list.*' => 'exists:companies,id',
         ]);
 
-        $a = $request->all();
-        return response()->json($a, 200);
+        $u = new User($request->all());
+        $u->save();
+        $u->companies()->attach($request->get('companies-list'));
+
+        return response()->json($u, 200);
     }
 
     public function show($id)

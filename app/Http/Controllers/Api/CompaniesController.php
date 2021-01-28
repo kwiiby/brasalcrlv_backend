@@ -19,7 +19,7 @@ class CompaniesController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $this->validate($request, [
             'name' => 'required|max:255',
             'cnpj' => 'required|max:255',
             'certificate' => 'required|max:255',
@@ -27,9 +27,6 @@ class CompaniesController extends Controller
             'certificate_expire' => 'required|unique|max:160'
         ]);
 
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
     }
 
     public function show($id)
