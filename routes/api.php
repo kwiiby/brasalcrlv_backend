@@ -18,11 +18,22 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-
+// Login routes
 Route::group([
     'namespace' => 'App\Http\Controllers\Api'
 ], function(){
 
-    Route::post('login', 'AuthController@login')->name('auth.login');
+    Route::post('login', 'AuthController@login');
+
+});
+
+// Logged-in routes
+Route::group([
+    'namespace' => 'App\Http\Controllers\Api',
+    'middleware' => 'auth:api',
+], function(){
+
+    Route::resource('users', 'UsersController')->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('companies', 'CompaniesController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
 });
