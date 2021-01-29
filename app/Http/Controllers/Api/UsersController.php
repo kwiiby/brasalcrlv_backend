@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -43,12 +44,24 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $u = User::findOrFail($id);
+        $u->update($request->only(['name', 'lastname', 'email', 'cpf']));
+
+        $u->companies()->sync($request->get('companies-list'));
+
+        if ($request->get('password') != null && $request->get('password') != ''){
+            $u->password = Hash::make($request->get('password'));
+            $u->save();
+        }
+
         return response()->json($u, 200);
     }
 
     public function destroy($id)
     {
         $u = User::findOrFail($id);
-        return response()->json($u, 200);
+        $u->delete();
+        return response()->json([
+            'message' => 'Usuario removido com sucesso.',
+        ], 200);
     }
 }

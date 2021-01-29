@@ -1,0 +1,11 @@
+<VirtualHost *:443>
+    ServerName localhost
+    DocumentRoot "C:\brasal\serpro\backend\public"
+    SSLEngine on
+    SSLCertificateFile "C:\brasal\brasalSerpro\ssl\server.crt"
+    SSLCertificateKeyFile "C:\brasal\brasalSerpro\ssl\server.key"
+    <Directory "C:\brasal\serpro\backend\public">
+        Options All
+        AllowOverride All
+    </Directory>
+</VirtualHost>

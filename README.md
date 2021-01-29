@@ -57,6 +57,9 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Extrair PEM e KEY do PFX
+```
+openssl pkcs12 -in brasal.pfx -out brasal.pem -nodes
+openssl pkcs12 -in brasal.pfx -clcerts -nokeys -out brasal_nokeys.pem
+openssl rsa -in brasal.pem -out brasal.key
+```

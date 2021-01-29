@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,4 +25,9 @@ class Company extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    public function setCertificateExpireAttribute($value)
+    {
+        $this->attributes['certificate_expire'] = Carbon::parse($value)->format('Y-m-d');
+    }
 }

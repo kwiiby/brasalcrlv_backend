@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:api')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
 // Login routes
 Route::group([
     'namespace' => 'App\Http\Controllers\Api'
@@ -36,4 +32,5 @@ Route::group([
     Route::resource('users', 'UsersController')->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('companies', 'CompaniesController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
+    Route::post('generate', 'CrlvController@generate');
 });
