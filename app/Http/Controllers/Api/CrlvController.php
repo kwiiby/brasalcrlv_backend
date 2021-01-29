@@ -22,8 +22,6 @@ class CrlvController extends Controller
 //            ]
 //        );
 
-        $aaaaaaa = storage_path() . '/certs/brasal.pem';
-
         $URI = "https://hom-wsdenatran.estaleiro.serpro.gov.br/v3/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
         $config = [
             'cert' => [storage_path() . '/certs/brasal_2.pem', 'brasal'],
@@ -34,15 +32,21 @@ class CrlvController extends Controller
             'headers' => [
                 'x-cpf-usuario' => Auth::user()->cpf,
                 'accept' => 'application/json; charset=utf-8',
+                'Content-Type' => 'application/json',
                 'pragma' => 'no-cache',
                 'cache-control' => 'no-cache',
             ],
         ];
 
         $client = new Client();
-        $res = $client->get($URI, $config);
+        $response = $client->request('get', $URI, $config);
+
+        if ($response->getStatusCode() == 200) {
+            $res = json_decode($response->getBody());
+            return response()->json($res->pdfBase64, 200);
+        }
         return response()->json([
-            'status' => 'success'
-        ], 200);
+            'status' => 'error'
+        ], 404);
     }
 }
