@@ -11,16 +11,7 @@ class CrlvController extends Controller
 {
     public function generate(Request $request)
     {
-//        $response = $client->post(
-//            $endpoint, [
-//                'json' => $content,
-//                'headers' => $headers,
-//                'connect_timeout' => 650,
-//                // add these
-//                'cert' => '/path/to/openyes.crt.pem',
-//                'ssl_key' => '/path/to/openyes.key.pem'
-//            ]
-//        );
+        $empresas = Auth::user()->companies();
 
         $URI = "https://hom-wsdenatran.estaleiro.serpro.gov.br/v3/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
         $config = [
