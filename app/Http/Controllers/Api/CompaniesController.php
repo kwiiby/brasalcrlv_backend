@@ -61,6 +61,9 @@ class CompaniesController extends Controller
     public function destroy($id)
     {
         $c = Company::findOrFail($id);
-        return response()->json($c, 200);
+        $c->delete();
+        return response()->json([
+            'message' => 'Empresa removido com sucesso.',
+        ], 200);
     }
 }

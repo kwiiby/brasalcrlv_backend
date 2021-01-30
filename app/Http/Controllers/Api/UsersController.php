@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -24,13 +25,16 @@ class UsersController extends Controller
             'email' => 'required|unique:users,email|max:160|regex:/^[A-Za-z0-9\.]*@(brasal)[.](com)[.](br)$/',
             'password' => 'min:4|required_with:password_confirmation|same:password_confirmation',
             'password_confirmation' => 'min:4',
-            'companies-list' => 'array',
-            'companies-list.*' => 'exists:companies,id',
+            'permission' => 'required',
+            'companies_list' => 'array',
+            'companies_list.*' => 'exists:companies,id',
         ]);
 
-        $u = new User($request->all());
+        $u = new User($request->only('name','lastname', 'cpf', 'email', 'permission'));
+        $u->password = Hash::make($request->get('password'));
+        $u->remember_token = Str::random(10);
         $u->save();
-        $u->companies()->attach($request->get('companies-list'));
+        $u->companies()->attach($request->get('companies_list'));
 
         return response()->json($u, 200);
     }
@@ -44,11 +48,11 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $u = User::findOrFail($id);
-        $u->update($request->only(['name', 'lastname', 'email', 'cpf']));
+        $u->update($request->only(['name', 'lastname', 'email', 'cpf', 'permission']));
 
-        $u->companies()->sync($request->get('companies-list'));
+        $u->companies()->sync($request->get('companies_list'));
 
-        if ($request->get('password') != null && $request->get('password') != ''){
+        if ($request->get('password') != null && $request->get('password') != '') {
             $u->password = Hash::make($request->get('password'));
             $u->save();
         }

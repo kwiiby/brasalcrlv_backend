@@ -16,7 +16,7 @@ use PhpParser\Node\Expr\Array_;
  * @property mixed email
  * @property mixed password
  * @property mixed remember_token
- * @property mixed|string type
+ * @property mixed|string permission
  */
 class User extends Authenticatable
 {
@@ -30,12 +30,12 @@ class User extends Authenticatable
         'cpf',
         'email',
         'password',
-        'type',
+        'permission',
+        'remember_token',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
         'created_at',
         'updated_at',
         'deleted_at',

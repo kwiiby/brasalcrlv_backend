@@ -19,10 +19,10 @@ class CreateUsersTable extends Migration
             $table->string('name')->nullable(false);
             $table->string('lastname')->nullable(true);
             $table->string('cpf')->nullable(false);
-            $table->string('email')->unique();
+            $table->string('email')->nullable(false);
             $table->string('password');
 
-            $table->enum('type', ['user', 'admin'])->nullable(false)->default('user');
+            $table->enum('permission', ['user', 'admin'])->nullable(false)->default('user');
 
             $table->rememberToken();
 

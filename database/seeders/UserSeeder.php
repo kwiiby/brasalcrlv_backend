@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         $u->email = 'chborges@brasal.com.br';
         $u->password = Hash::make('password');
         $u->remember_token = Str::random(10);
-        $u->type = 'admin';
+        $u->permission = 'admin';
         $u->save();
         $u->companies()->sync([1,2]);
     }
