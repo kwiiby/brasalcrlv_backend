@@ -19,14 +19,16 @@ class CompaniesSeeder extends Seeder
             [
                 'name' => 'Brasal refrigerantes',
                 'cnpj' => '1111111111111111',
-                'certificate' => 'none',
+                'certificate_pem' => 'none',
+                'certificate_key' => 'none',
                 'certificate_password' => 'none',
                 'certificate_expire' => Carbon::now()->addMonths(6)->format('Y-m-d'),
             ],
             [
                 'name' => 'Brasal veiculos',
                 'cnpj' => '0000000000000000',
-                'certificate' => 'none',
+                'certificate_pem' => 'none',
+                'certificate_key' => 'none',
                 'certificate_password' => 'none',
                 'certificate_expire' => Carbon::now()->addMonths(4)->format('Y-m-d'),
             ]

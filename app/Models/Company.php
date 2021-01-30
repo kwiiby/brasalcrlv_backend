@@ -15,12 +15,16 @@ class Company extends Model
     protected $fillable = [
         'name',
         'cnpj',
-        'certificate',
+        'certificate_pem',
+        'certificate_key',
         'certificate_password',
         'certificate_expire',
     ];
 
     protected $hidden = [
+        'certificate_pem',
+        'certificate_key',
+        'certificate_password',
         'created_at',
         'updated_at',
         'deleted_at',

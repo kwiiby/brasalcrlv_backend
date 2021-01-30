@@ -38,16 +38,23 @@ class CompaniesController extends Controller
     public function update(Request $request, $id)
     {
         $c = Company::findOrFail($id);
-        $c->update($request->only(['name', 'cnpj', 'certificate_expire']));
+        $c->update($request->only(['name', 'cnpj']));
 
-        if ($request->get('certificate_password') && $request->get('certificate_password') != '') {
-            $c->certificate_password = $request->get('certificate_password');
+        if ($request->get('certificate_expire') && $request->get('certificate_expire') != '') {
+            $c->certificate_expire = $request->get('certificate_expire');
             $c->save();
         }
 
-        $aaa = $request->file('fileSource');
+        if ($request->get('pem') && $request->get('pem') != '' && $request->get('key') && $request->get('key') != '' ) {
+            $c->certificate_key = $request->get('key');
+            $c->certificate_pem = $request->get('pem');
+            $c->save();
+        }
 
-
+        if ($request->get('certificate_password') && $request->get('certificate_password') != '') {
+            $c->certificate_password = base64_encode($request->get('certificate_password'));
+            $c->save();
+        }
         return response()->json($c, 200);
     }
 

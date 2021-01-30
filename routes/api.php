@@ -33,4 +33,7 @@ Route::group([
     Route::resource('companies', 'CompaniesController')->only(['index', 'store', 'show', 'update', 'destroy']);
 
     Route::post('generate', 'CrlvController@generate');
+
+    // upload pem and key
+    Route::post('upload', 'UploadController@fileUpload');
 });

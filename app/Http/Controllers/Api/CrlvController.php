@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +12,19 @@ class CrlvController extends Controller
 {
     public function generate(Request $request)
     {
-        $empresas = Auth::user()->companies();
+        $this->validate($request, [
+            'placa' => 'required|min:7|max:7',
+            'renavam' => 'required|min:6',
+            'company' => 'exists:companies,id',
+        ]);
+
+        $path = storage_path();
+        $c = Company::find($request->get('company'));
 
         $URI = "https://hom-wsdenatran.estaleiro.serpro.gov.br/v3/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
         $config = [
-            'cert' => [storage_path() . '/certs/brasal_2.pem', 'brasal'],
-            'ssl_key' => [storage_path() . '/certs/brasal.key', 'brasal'],
+            'cert' => ["{$path}/certs/{$c->certificate_pem}", $c->certificate_password],
+            'ssl_key' => ["{$path}/certs/{$c->certificate_key}", $c->certificate_password],
             'connect_time_out' => 650,
             'protocols' => ['https'],
             'verify' => false,

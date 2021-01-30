@@ -18,7 +18,8 @@ class CreateCompaniesTable extends Migration
 
             $table->string('name')->nullable(false);
             $table->string('cnpj', 16)->nullable();
-            $table->string('certificate')->nullable(false);
+            $table->string('certificate_pem')->nullable(false);
+            $table->string('certificate_key')->nullable(false);
             $table->string('certificate_password')->nullable(false);
             $table->date('certificate_expire')->nullable(false);
 

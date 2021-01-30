@@ -44,7 +44,7 @@ class User extends Authenticatable
     protected $casts = [];
 
     protected $appends = [
-      'companies-list',
+      'companies_list',
     ];
 
     public function getCompaniesListAttribute()
