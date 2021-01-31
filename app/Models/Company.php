@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property mixed name
+ * @property mixed cnpj
+ * @property mixed certificate_pem
+ * @property mixed certificate_key
+ * @property mixed certificate_password
+ * @property mixed certificate_expire
+ */
 class Company extends Model
 {
     use HasFactory, SoftDeletes;
@@ -30,9 +38,4 @@ class Company extends Model
         'updated_at',
         'deleted_at',
     ];
-
-    public function setCertificateExpireAttribute($value)
-    {
-        $this->attributes['certificate_expire'] = Carbon::parse($value)->format('Y-m-d');
-    }
 }

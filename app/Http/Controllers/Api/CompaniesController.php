@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -21,12 +22,22 @@ class CompaniesController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:255',
-            'cnpj' => 'required|max:255',
-            'certificate' => 'required|max:255',
-            'certificate_password' => 'required|unique|max:160',
-            'certificate_expire' => 'required|unique|max:160'
+            'cnpj' => 'required|min:14|max:14',
+            'pem' => 'required|max:255',
+            'key' => 'required|max:160',
+            'certificate_expire' => 'required|max:160',
+            'certificate_password' => 'required|max:160',
         ]);
 
+        $c = new Company();
+        $c->name = $request->get('name');
+        $c->cnpj = $request->get('cnpj');
+        $c->certificate_pem = $request->get('pem');
+        $c->certificate_key = $request->get('key');
+        $c->certificate_password = $request->get('certificate_expire');
+        $c->certificate_expire = Carbon::parse($request->get('certificate_expire'))->format('Y-m-d');
+        $c->save();
+        return response()->json($c, 200);
     }
 
     public function show($id)
@@ -41,7 +52,7 @@ class CompaniesController extends Controller
         $c->update($request->only(['name', 'cnpj']));
 
         if ($request->get('certificate_expire') && $request->get('certificate_expire') != '') {
-            $c->certificate_expire = $request->get('certificate_expire');
+            $c->certificate_expire = Carbon::parse($request->get('certificate_expire'))->format('Y-m-d');
             $c->save();
         }
 
