@@ -29,6 +29,8 @@ Route::group([
     'middleware' => 'auth:api',
 ], function(){
 
+    Route::get('logout', 'AuthController@logout');
+
     Route::resource('users', 'UsersController')->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('companies', 'CompaniesController')->only(['index', 'store', 'show', 'update', 'destroy']);
 

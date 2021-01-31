@@ -43,8 +43,17 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'status' => 401,
+            'status' => 404,
             'errors' => 'Usuario e/ou senha invalidos'
+        ], 404);
+    }
+
+    public function logout() {
+        $user = Auth::user()->token();
+        $user->revoke();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Logout efetuado com sucess.'
         ], 200);
     }
 }
