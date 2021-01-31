@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class CompaniesController extends Controller
 {
