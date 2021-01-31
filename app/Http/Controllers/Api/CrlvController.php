@@ -42,7 +42,7 @@ class CrlvController extends Controller
 
         if ($response->getStatusCode() == 200) {
             $res = json_decode($response->getBody());
-            return response()->json($res->pdfBase64, 200);
+            return response()->json(['base64' => $res->pdfBase64], 200);
         }
         return response()->json([
             'status' => 'error'
