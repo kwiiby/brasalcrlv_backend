@@ -21,7 +21,9 @@ class CrlvController extends Controller
         $path = storage_path();
         $c = Company::find($request->get('company'));
 
-        $URI = "https://hom-wsdenatran.estaleiro.serpro.gov.br/v3/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
+        $ws = env('SERPRO', 'https://hom.wsdenatran.estaleiro.serpro.gov.br');
+
+        $URI = "{$ws}/v3/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
         $config = [
             'cert' => ["{$path}/certs/{$c->certificate_pem}", $c->certificate_password],
             'ssl_key' => ["{$path}/certs/{$c->certificate_key}", $c->certificate_password],

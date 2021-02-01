@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -75,6 +76,13 @@ class Handler extends ExceptionHandler
                 'status' => 422,
                 'error' => $e->validator->getMessageBag()
             ], 422);
+        }
+        if ($e instanceof RequestException) {
+
+            return response()->json([
+                'status' => $e->getCode(),
+                'error' => $e->getMessage()
+            ], 500);
         }
         if ($e instanceof QueryException) {
             return response()->json([
