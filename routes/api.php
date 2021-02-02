@@ -30,6 +30,7 @@ Route::group([
 ], function(){
 
     Route::get('logout', 'AuthController@logout');
+    Route::post('change_password', 'AuthController@changePassword');
 
     Route::resource('users', 'UsersController')->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('companies', 'CompaniesController')->only(['index', 'store', 'show', 'update', 'destroy']);

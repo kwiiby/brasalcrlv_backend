@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -55,5 +56,44 @@ class AuthController extends Controller
             'status' => 200,
             'message' => 'Logout efetuado com sucess.'
         ], 200);
+    }
+
+    public function changePassword(Request $request) {
+
+        $this->validate($request, [
+            'old_password' => 'required|min:4',
+            'password' => 'min:4|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'min:4',
+            'logout' => 'required|boolean',
+        ]);
+
+
+        $user = Auth::user();
+
+        if (Hash::check($request->get('old_password'), $user->password)) {
+            $user->password = Hash::make($request->get('password'));
+            $user->save();
+
+            if ($request->get('logout')) {
+
+                foreach ($user->tokens as $token) {
+                    $token->revoke();
+                    $token->delete();
+                }
+                return response()->json([
+                    'status' => 205,
+                    'message' => 'Senha alterada com sucesso, e logout efetuado em todos os locais.'
+                ], 200);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Senha alterada com sucesso.'
+            ]);
+        }
+        return response()->json([
+            'status' => 403,
+            'message' => 'A Senha atual informada não confere.'
+        ], 403);
     }
 }
