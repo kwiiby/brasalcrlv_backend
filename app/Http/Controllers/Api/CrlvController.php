@@ -24,6 +24,11 @@ class CrlvController extends Controller
         $ws = env('SERPRO', 'https://hom.wsdenatran.estaleiro.serpro.gov.br/v3');
 
         $URI = "{$ws}/veiculos/crlv/placa/{$request->get('placa')}/renavam/{$request->get('renavam')}";
+
+        if ($request->get('filial') != null && $request->get('filial') != '') {
+            $URI .= "/cnpj/{$request->get('filial')}";
+        }
+
         $config = [
             'cert' => ["{$path}/certs/{$c->certificate_pem}", $c->certificate_password],
             'ssl_key' => ["{$path}/certs/{$c->certificate_key}", $c->certificate_password],
